@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Files</title>
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+</head>
+<body>
+    <div id="body">
+        <h1>Files</h1>
+
+        <table>
+            <tr>
+                <th>Options</th>
+                <th></th>
+                <th>Filename</th>
+                <th>Size</th>
+            </tr>
+            {% if path != "" %}
+                <tr>
+                    <td><a href="{{parent}}"><img class="filter-white" src="/static/parent.svg" alt="Parent Directory"></a></td>
+                    <td></td>
+                    <td>Parent Directory</td>
+                </tr>
+            {% endif %}
+
+            {% for file in torrents %}
+            <tr>
+                <td>
+                    {% if file.get("type") == "file" %}
+                        <a href="{{'/download/' + path + '/' + file.get('name')}}" download><img class="filter-white" src="/static/download.svg" alt="download"></a>
+                        <a href="{{'/zip/' + path + '/' + file.get('name')}}" download><img class="filter-white" src="/static/zip.svg" alt="zip"></a>
+                        <a href="{{'/md5/' + path + '/' + file.get('name')}}" download><img class="filter-white" src="/static/md5.svg" alt="md5"></a>
+                    {% else %}
+                        <a href="{{path + '/' + file.get('name')}}"><img class="filter-white" src="/static/folder.svg" alt="open folder"></a>
+                    {% endif %}
+                </td>
+                <td style="text-align: right;"><img src="/static/{{file.get('extension')}}.svg" alt=""></td>
+                <td>{{file.get("name")}}</td>
+                {% if file.get("type") == "file" %}
+                    <td>{{file.get("size")}}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    
+</body>
+</html>
