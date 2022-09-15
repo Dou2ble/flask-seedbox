@@ -23,7 +23,7 @@ CORS(app)
 def home(path=""):
     print()
     torrents = []
-    full_path = "files\\" + path + "\\"
+    full_path = "files/" + path + "/"
     for file in os.listdir(full_path):
         torrents.append({
             "type": utils.type(full_path + file),
@@ -42,28 +42,28 @@ def home(path=""):
 
 @app.route("/download/<path:path>", methods=["GET", "POST"])
 def download(path):
-    full_path = "files\\" + path
-    return send_file(os.getcwd()+"\\" + full_path, as_attachment=True)
+    full_path = "files/" + path
+    return send_file(os.getcwd()+"/" + full_path, as_attachment=True)
 
 @app.route("/zip/<path:filename>", methods=["GET", "POST"])
 def zip(filename):
     destination_file = "download.zip"
     
-    with ZipFile("output\\" + destination_file, "w") as f:
-        f.write("files\\" + filename)
+    with ZipFile("output/" + destination_file, "w") as f:
+        f.write("files/" + filename)
         f.close()
 
-    return send_file(os.getcwd() + "\\output\\" + destination_file, as_attachment=True)
+    return send_file(os.getcwd() + "/output/" + destination_file, as_attachment=True)
 
 
 @app.route("/md5/<path:path>", methods=["GET", "POST"])
 def md5(path):
-    full_path = "files\\" + path + "\\"
+    full_path = "files/" + path + "/"
     destination_file = "checksum" + ".md5"
-    hash = hashlib.md5(open("files\\" + path, "rb").read()).hexdigest()
-    os.system(f'echo {hash} > "output\\{destination_file}"')
+    hash = hashlib.md5(open("files/" + path, "rb").read()).hexdigest()
+    os.system(f'echo {hash} > "output/{destination_file}"')
 
-    return send_file(os.getcwd()+"\\output\\" + destination_file, as_attachment=True)
+    return send_file(os.getcwd()+"/output/" + destination_file, as_attachment=True)
 
 
-app.run(debug=True)
+app.run(debug=True, host="0.0.0.0")
